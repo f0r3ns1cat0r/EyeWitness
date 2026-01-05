@@ -30,12 +30,12 @@ trap cleanup_on_failure ERR
 
 # Header
 echo
-print_info "╔══════════════════════════════════════════════════════════════╗"
-print_info "║              EyeWitness Setup (Virtual Environment)         ║"
-print_info "║                                                              ║"
-print_info "║  Production-ready installation using Python virtual         ║"
-print_info "║  environments to avoid PEP 668 and system conflicts         ║"
-print_info "╚══════════════════════════════════════════════════════════════╝"
+print_info "╔══════════════════════════════════════════════════════╗"
+print_info "║        EyeWitness Setup (Virtual Environment)        ║"
+print_info "║                                                      ║"
+print_info "║  Production-ready installation using Python virtual  ║"
+print_info "║  environments to avoid PEP 668 and system conflicts  ║"
+print_info "╚══════════════════════════════════════════════════════╝"
 echo
 
 # Check root privileges
@@ -51,7 +51,11 @@ print_info "Detecting system information..."
 if [ -f /etc/os-release ]; then
     . /etc/os-release
     OS_ID="$ID"
-    OS_VERSION="$VERSION_ID"
+    if [ -n "${VERSION_ID+set}" ]; then
+        OS_VERSION="$VERSION_ID"
+    else
+        OS_VERSION="$(uname -r)"
+    fi
 else
     print_error "Cannot detect OS. /etc/os-release not found"
     exit 1
